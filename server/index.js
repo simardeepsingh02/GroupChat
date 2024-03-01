@@ -1,12 +1,13 @@
 const WebSocket = require('ws');
 const http = require('http');
 const express = require('express');
+const cors = require('cors');
+
 
 const app = express();
+app.use(cors());
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
-const cors = require('cors');
-app.use(cors());
 // Store connected users with their names
 const users = new Map();
 
