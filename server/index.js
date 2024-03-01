@@ -5,7 +5,8 @@ const express = require('express');
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
-
+const cors = require('cors');
+app.use(cors());
 // Store connected users with their names
 const users = new Map();
 
