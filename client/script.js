@@ -1,5 +1,5 @@
 
-const socket = new WebSocket('wss://main--chatomegal.netlify.app');
+const socket = new WebSocket('ws://main--chatomegal.netlify.app');
 
 socket.addEventListener('open', (event) => {
     console.log('WebSocket connection opened:', event);
