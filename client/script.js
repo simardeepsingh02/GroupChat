@@ -17,9 +17,6 @@ socket.addEventListener('close', (event) => {
     console.log('WebSocket connection closed:', event);
 });
 
-socket.addEventListener('open', (event) => {
-    console.log('WebSocket connection opened:', event);
-});
 
 socket.addEventListener('message', (event) => {
     const messagesDiv = document.getElementById('messages');
