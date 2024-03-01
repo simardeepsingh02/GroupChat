@@ -1,5 +1,21 @@
-const url='ws://localhost:9876'
-const server = new WebSocket(url)
+
+const socket = new WebSocket('ws://localhost:3000');
+
+socket.addEventListener('open', (event) => {
+    console.log('WebSocket connection opened:', event);
+});
+
+socket.addEventListener('message', (event) => {
+    console.log('Received message:', event.data);
+});
+
+socket.addEventListener('error', (event) => {
+    console.error('WebSocket error:', event);
+});
+
+socket.addEventListener('close', (event) => {
+    console.log('WebSocket connection closed:', event);
+});
 
 const message=document.getElementById('messages')
 const input=document.getElementById('message')
