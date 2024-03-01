@@ -28,7 +28,7 @@ wss.on('connection', (ws) => {
 
         // Add user to the list of connected users
         users.set(ws, name);
-
+        sendOnlineUsers()
         // Broadcast user joined message
         broadcast(`${name} joined the chat.`);
 
@@ -38,16 +38,35 @@ wss.on('connection', (ws) => {
         });
 
         ws.on('close', () => {
+
             console.log(`WebSocket connection closed: ${name}`);
             
             // Remove user from the list of connected users
             users.delete(ws);
-
+            sendOnlineUsers()
             // Broadcast user left message
             broadcast(`${name} left the chat.`);
         });
     });
 });
+
+function sendOnlineUsers() {
+    const onlineUsers = Array.from(users.values());
+    const onlineUsersString = `Online users: ${onlineUsers.join(', ')}`;
+    broadcast(onlineUsersString);
+
+    // Send the updated list of names to all clients
+    broadcastOnlineUsersList(onlineUsers);
+}
+
+function broadcastOnlineUsersList(usersList) {
+    users.forEach((user, ws) => {
+        if (user.readyState === WebSocket.OPEN) {
+            const onlineUsersString = `Online users: ${usersList.join(', ')}`;
+            user.send(onlineUsersString);
+        }
+    });
+}
 
 function broadcast(message) {
     users.forEach((userName, user) => {

@@ -17,29 +17,19 @@ socket.addEventListener('close', (event) => {
     console.log('WebSocket connection closed:', event);
 });
 
-const message=document.getElementById('messages')
-const input=document.getElementById('message')
-const button=document.getElementById('send')
+socket.addEventListener('open', (event) => {
+    console.log('WebSocket connection opened:', event);
+});
 
-button.disabled=true
-button.addEventListener('click',sendMessage,false)
+socket.addEventListener('message', (event) => {
+    const messagesDiv = document.getElementById('messages');
+    messagesDiv.innerHTML += `<p>${event.data}</p>`;
+});
 
-server.onopen=function(){
-    server.send("Hello World")
-    button.disabled=false
+function sendMessage() {
+    const messageInput = document.getElementById('messageInput');
+    const message = messageInput.value;
+    socket.send(message);
+    messageInput.value = '';
 }
-server.onmessage=function(event){
-    const {data}=event
-    generateMessage(data,'Server')
-    
-} 
-function generateMessage(msg,type){
-    const newMessage=document.createElement("div")
-    newMessage.innerText=`${type} Says ${msg}`
-    message.appendChild(newMessage)
-}
-function sendMessage(){
-    const text= input.value
-    generateMessage(text,'client')
-    server.send(text)
-}
+
